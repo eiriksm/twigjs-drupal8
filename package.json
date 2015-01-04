@@ -1,0 +1,27 @@
+{
+  "name": "twigjs-drupal8",
+  "version": "1.0.0",
+  "description": "twigjs-drupal8 ==============",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eiriksm/twigjs-drupal8.git"
+  },
+  "author": "Eirik S. Morland <eirik@morland.no>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/eiriksm/twigjs-drupal8/issues"
+  },
+  "homepage": "https://github.com/eiriksm/twigjs-drupal8",
+  "devDependencies": {
+    "brfs": "^1.2.0",
+    "browserify": "^8.0.3",
+    "gulp": "^3.8.10",
+    "gulp-livereload": "^3.2.0",
+    "twig": "^0.7.2",
+    "vinyl-source-stream": "^1.0.0"
+  }
+}
