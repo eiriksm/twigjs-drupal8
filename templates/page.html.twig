@@ -1,0 +1,73 @@
+{#
+/**
+ * @file
+ */
+#}
+<div class="row" id="page-wrapper"><div id="page">
+
+  <header id="header" role="banner" aria-label="{{ 'Site header'|t}}"><div class="section clearfix">
+
+    {% if logo %}
+      <a href="{{ front_page }}" title="{{ 'Home'|t }}" rel="home" id="logo">
+        <img src="{{ logo }}" alt="{{ 'Home'|t }}" />
+      </a>
+    {% endif %}
+
+    {% if site_name or site_slogan %}
+      <div id="name-and-slogan"{% if hide_site_name and hide_site_slogan %} class="visually-hidden"{% endif %}>
+        <h1 id="site-name"{% if hide_site_name %} class="visually-hidden" {% endif %}>
+          <a href="{{ front_page }}" title="{{ 'Home'|t }}" rel="home"><span>{{ site_name }}</span></a>
+        </h1>
+
+        {% if site_slogan %}
+          <div id="site-slogan"{% if hide_site_slogan %} class="visually-hidden"{% endif %}>
+            {{ site_slogan }}
+          </div>
+        {% endif %}
+      </div><!-- /#name-and-slogan -->
+    {% endif %}
+
+    {{ page.header }}
+
+  </div></header> <!-- /.section, /#header-->
+
+  {% if messages %}
+    <div id="messages"><div class="section clearfix">
+      {{ messages }}
+    </div></div> <!-- /.section, /#messages -->
+  {% endif %}
+
+
+  <div id="main-wrapper" class="clearfix"><div id="main" class="clearfix">
+
+    <main id="content" role="main"><section class="section">
+      <div id="content-area">
+        {{ page.content }}
+      </div>
+    </section></main> <!-- /.section, /#content -->
+
+    {% if page.sidebar_first %}
+      <div id="sidebar-first" class="column sidebar"><aside class="section" role="complementary">
+        {{ page.sidebar_first }}
+      </aside></div><!-- /.section, /#sidebar-first -->
+    {% endif %}
+
+    {% if page.sidebar_second %}
+      <div id="sidebar-second" class="column sidebar"><aside class="section" role="complementary">
+        {{ page.sidebar_second }}
+      </aside></div><!-- /.section, /#sidebar-second -->
+    {% endif %}
+
+  </div></div><!-- /#main, /#main-wrapper -->
+
+  <div id="footer-wrapper"><footer class="section">
+
+    {% if page.footer %}
+      <div id="footer" role="contentinfo" class="clearfix">
+        {{ page.footer }}
+      </div> <!-- /#footer -->
+   {% endif %}
+
+  </footer></div> <!-- /.section, /#footer-wrapper -->
+
+</div></div> <!-- /#page, /#page-wrapper -->

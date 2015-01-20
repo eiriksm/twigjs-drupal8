@@ -1,0 +1,6 @@
+js-js:
+  js:
+    build/js.js: {}
+  css:
+    theme:
+      css/vendor/foundation.css: {}
