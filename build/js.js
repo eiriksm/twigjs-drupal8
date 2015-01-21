@@ -1,54 +1,28 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-(function (Buffer){
-/*global Drupal, domready */
 'use strict';
-var baseUrl = window.location.protocol + '//' + window.location.hostname + window.location.port + Drupal.url('');
-var Twig = require('twig/twig');
-var twig = Twig.twig;
-var m = require('moment');
-require('twigjs-passthrough')(Twig);
-require('twigjs-without')(Twig);
-require('twigjs-trans')(Twig);
 
-// Templates should ideally be fetched when needed, but this is POC, right?
-
-var nodeTemplate = Buffer("eyMKLyoqCiAqIEBmaWxlCiAqLwojfQo8YXJ0aWNsZXt7IGF0dHJpYnV0ZXMuYWRkQ2xhc3MoY2xhc3NlcykgfX0+CgogIDxoZWFkZXI+CiAgICB7eyB0aXRsZV9wcmVmaXggfX0KICAgIHslIGlmIG5vdCBwYWdlICV9CiAgICAgIDxoMiBjbGFzcz0ibm9kZV9fdGl0bGUiPgogICAgICAgIDxhIGhyZWY9Int7IHVybCB9fSIgcmVsPSJib29rbWFyayI+e3sgbGFiZWwgfX08L2E+CiAgICAgIDwvaDI+CiAgICB7JSBlbHNlICV9CiAgICAgIDxoMiBjbGFzcz0ibm9kZV9fdGl0bGUiPgogICAgICAgIHt7IGxhYmVsIH19CiAgICAgIDwvaDI+CiAgICB7JSBlbmRpZiAlfQogICAge3sgdGl0bGVfc3VmZml4IH19CgogICAgeyUgaWYgZGlzcGxheV9zdWJtaXR0ZWQgJX0KICAgICAgPGRpdiBjbGFzcz0ibm9kZV9fbWV0YSI+CiAgICAgICAge3sgYXV0aG9yX3BpY3R1cmUgfX0KICAgICAgICA8c3Bhbnt7IGF1dGhvcl9hdHRyaWJ1dGVzIH19PgogICAgICAgICAgeyUgdHJhbnMgJX1TdWJtaXR0ZWQgYnkge3sgYXV0aG9yX25hbWV8cGFzc3Rocm91Z2ggfX0gb24ge3sgZGF0ZXxwYXNzdGhyb3VnaCB9fXslIGVuZHRyYW5zICV9CiAgICAgICAgPC9zcGFuPgogICAgICAgIHt7IG1ldGFkYXRhIH19CiAgICAgIDwvZGl2PgogICAgeyUgZW5kaWYgJX0KICA8L2hlYWRlcj4KCiAgeyUgaWYgcGFnZSAlfQogIDxkaXYgY2xhc3M9Im5vZGVfX2NvbnRlbnQgY2xlYXJmaXgiIHt7IGNvbnRlbnRfYXR0cmlidXRlcy5hZGRDbGFzcygnbm9kZV9fY29udGVudCcsICdjbGVhcmZpeCcpIH19PgogICAge3sgY29udGVudHx3aXRob3V0KCdjb21tZW50JywgJ2xpbmtzJykgfX0KICA8L2Rpdj4KICB7JSBlbmRpZiAlfQoKICB7JSBpZiBub3QgcGFnZSAlfQogIDxkaXYgY2xhc3M9InJlYWRtb3JlLWxpbmsiPgogICAgPGEgaHJlZj0ie3sgdXJsIH19IiByZWw9ImJvb2ttYXJrIj57JSB0cmFucyAlfVJlYWQgbW9yZXslIGVuZHRyYW5zICV9PC9hPgogIDwvZGl2PgogIHslIGVuZGlmICV9CgogIHt7IGNvbnRlbnQuY29tbWVudCB9fQoKPC9hcnRpY2xlPgo=","base64");
-var twiggedNode = twig({
-  data: nodeTemplate.toString()
-});
-
-function getNodesAndReturn() {
-  // Get nodes with 0 parameter equals list.
-  getNodes();
-  return false;
-}
-
-function getNodeAndReturn() {
-  // Hacking together a parameter for requesting the node.
-  var url = this.getAttribute('href');
-  var nid = url.substr(url.lastIndexOf('/') + 1);
-  getNodes(nid);
-  return false;
-}
-
-function attachListeners() {
-  document.querySelector('#logo').onclick = getNodesAndReturn;
-  document.querySelector('#site-name').querySelector('a').onclick = getNodesAndReturn;
+module.exports = function attachListeners(list, single) {
+  document.querySelector('#logo').onclick = list;
+  document.querySelector('#site-name').querySelector('a').onclick = list;
   var titles = document.querySelectorAll('.node__title a');
   if (titles && titles.length) {
     for (var i = 0, len = titles.length; i < len; i++) {
-      titles[i].onclick = getNodeAndReturn;
+      titles[i].onclick = single;
     }
   }
   var readmoreLinks = document.querySelectorAll('.readmore-link');
   if (readmoreLinks && readmoreLinks.length) {
     for (var j = 0, l = readmoreLinks.length; j < l; j++) {
-      readmoreLinks[j].querySelector('a').onclick = getNodeAndReturn;
+      readmoreLinks[j].querySelector('a').onclick = single;
     }
   }
-}
+};
 
-function getNodes(nid) {
+},{}],2:[function(require,module,exports){
+/*global Drupal */
+
+function getNodes(nid, callback) {
+  'use strict';
   var url = 'node/' + nid;
   if (!nid) {
     // This is the URL defined in the view that comes with the theme.
@@ -59,46 +33,14 @@ function getNodes(nid) {
   url = Drupal.url('') + url + '?json';
   var xhr = new XMLHttpRequest();
   xhr.onload = function() {
-    var nodes = JSON.parse(this.responseText);
-    var output = [];
-    // Ugly hack to make the single node response look like the others.
-    // @todo, split this into seperate functions.
-    if (nid) {
-      nodes = [
-        nodes
-      ];
+    var data;
+    try {
+      data = JSON.parse(this.responseText);
     }
-    for (var i = 0, len = nodes.length; i < len; i++) {
-      var node = nodes[i];
-      node.label = node.title[0].value;
-      // Brute force the REST response to include a couple of properties
-      // that the node template wants.
-      node.display_submitted = true;
-      node.url = node._links.self.href;
-      node.author_name = 'Anonymous (not verified)';
-      node.content = {
-        links: 'test',
-        field_image: node._links[baseUrl + 'rest/relation/node/article/field_image'] ? '<div class="field field-node--field-image field-name-field-image field-type-image field-label-hidden"><div class="field-items"><div class="field-item"><img src="' + node._links[baseUrl + 'rest/relation/node/article/field_image'][0].href + '"></div></div></div>' : '',
-        body: node.body[0].value.split("\n").join("<br>")
-      };
-      node.content_attributes = '';
-      if (nid) {
-        node.page = true;
-      }
-      node.date = m(parseInt(node.created[0].value, 10) * 1000).format('ddd, MM/DD/YYYY - HH:mm');
-      output.push(twiggedNode.render(node));
+    catch (err) {
+      callback(err);
     }
-    document.getElementById('content-area').innerHTML = output.join('');
-    attachListeners();
-    // Push new state.
-    var title = nodes[0].title[0].value;
-    // Remove appended query parameter.
-    var displayUrl = url.replace('?json', '');
-    if (!nid) {
-      title = 'Front page';
-      displayUrl = Drupal.url('') + 'node';
-    }
-    window.history.pushState({}, title, displayUrl);
+    callback(null, data);
   };
 
   xhr.open('GET', url);
@@ -106,11 +48,100 @@ function getNodes(nid) {
   xhr.send();
 }
 
+module.exports = getNodes;
+
+},{}],3:[function(require,module,exports){
+(function (Buffer){
+/*global Drupal, domready */
+'use strict';
+var baseUrl = window.location.protocol + '//' + window.location.hostname + window.location.port + Drupal.url('');
+var Twig = require('twig/twig');
+var twig = Twig.twig;
+require('twigjs-passthrough')(Twig);
+require('twigjs-without')(Twig);
+require('twigjs-trans')(Twig);
+
+var getNodes = require('./getNodes');
+
+// Templates should ideally be fetched when needed, but this is POC, right?
+
+var nodeTemplate = Buffer("eyMKLyoqCiAqIEBmaWxlCiAqLwojfQo8YXJ0aWNsZXt7IGF0dHJpYnV0ZXMuYWRkQ2xhc3MoY2xhc3NlcykgfX0+CgogIDxoZWFkZXI+CiAgICB7eyB0aXRsZV9wcmVmaXggfX0KICAgIHslIGlmIG5vdCBwYWdlICV9CiAgICAgIDxoMiBjbGFzcz0ibm9kZV9fdGl0bGUiPgogICAgICAgIDxhIGhyZWY9Int7IHVybCB9fSIgcmVsPSJib29rbWFyayI+e3sgbGFiZWwgfX08L2E+CiAgICAgIDwvaDI+CiAgICB7JSBlbHNlICV9CiAgICAgIDxoMiBjbGFzcz0ibm9kZV9fdGl0bGUiPgogICAgICAgIHt7IGxhYmVsIH19CiAgICAgIDwvaDI+CiAgICB7JSBlbmRpZiAlfQogICAge3sgdGl0bGVfc3VmZml4IH19CgogICAgeyUgaWYgZGlzcGxheV9zdWJtaXR0ZWQgJX0KICAgICAgPGRpdiBjbGFzcz0ibm9kZV9fbWV0YSI+CiAgICAgICAge3sgYXV0aG9yX3BpY3R1cmUgfX0KICAgICAgICA8c3Bhbnt7IGF1dGhvcl9hdHRyaWJ1dGVzIH19PgogICAgICAgICAgeyUgdHJhbnMgJX1TdWJtaXR0ZWQgYnkge3sgYXV0aG9yX25hbWV8cGFzc3Rocm91Z2ggfX0gb24ge3sgZGF0ZXxwYXNzdGhyb3VnaCB9fXslIGVuZHRyYW5zICV9CiAgICAgICAgPC9zcGFuPgogICAgICAgIHt7IG1ldGFkYXRhIH19CiAgICAgIDwvZGl2PgogICAgeyUgZW5kaWYgJX0KICA8L2hlYWRlcj4KCiAgeyUgaWYgcGFnZSAlfQogIDxkaXYgY2xhc3M9Im5vZGVfX2NvbnRlbnQgY2xlYXJmaXgiIHt7IGNvbnRlbnRfYXR0cmlidXRlcy5hZGRDbGFzcygnbm9kZV9fY29udGVudCcsICdjbGVhcmZpeCcpIH19PgogICAge3sgY29udGVudHx3aXRob3V0KCdjb21tZW50JywgJ2xpbmtzJykgfX0KICA8L2Rpdj4KICB7JSBlbmRpZiAlfQoKICB7JSBpZiBub3QgcGFnZSAlfQogIDxkaXYgY2xhc3M9InJlYWRtb3JlLWxpbmsiPgogICAgPGEgaHJlZj0ie3sgdXJsIH19IiByZWw9ImJvb2ttYXJrIj57JSB0cmFucyAlfVJlYWQgbW9yZXslIGVuZHRyYW5zICV9PC9hPgogIDwvZGl2PgogIHslIGVuZGlmICV9CgogIHt7IGNvbnRlbnQuY29tbWVudCB9fQoKPC9hcnRpY2xlPgo=","base64");
+var twiggedNode = twig({
+  data: nodeTemplate.toString()
+});
+var renderNode = require('./renderNode')(twiggedNode);
+var attachListeners = require('./attachListeners');
+var getNodeAndReturn, getNodesAndReturn;
+
+getNodesAndReturn = function() {
+  // Get nodes with 0 parameter equals list.
+  getNodes(null, function gotNodes(err, nodes) {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    var output = [];
+    for (var i = 0, len = nodes.length; i < len; i++) {
+      output.push(renderNode(nodes[i]));
+    }
+    document.getElementById('content-area').innerHTML = output.join('');
+    var title = 'Front page';
+    window.history.pushState({}, title, baseUrl + 'node');
+    attachListeners(getNodesAndReturn, getNodeAndReturn);
+  });
+  return false;
+};
+
+getNodeAndReturn = function() {
+  // Hacking together a parameter for requesting the node.
+  var url = this.getAttribute('href');
+  var nid = url.substr(url.lastIndexOf('/') + 1);
+  getNodes(nid, function gotNode(err, node) {
+    if (err) {
+      throw new Error(err);
+    }
+    node.page = true;
+    var output = renderNode(node);
+    document.getElementById('content-area').innerHTML = output;
+    var title = node.title[0].value;
+    window.history.pushState({}, title, baseUrl + 'node/' + nid);
+    attachListeners(getNodesAndReturn, getNodeAndReturn);
+  });
+  return false;
+};
+
 // Attach all listeners on dom ready.
-domready(attachListeners);
+domready(function() {
+  attachListeners(getNodesAndReturn, getNodeAndReturn);
+});
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":8,"moment":2,"twig/twig":3,"twigjs-passthrough":4,"twigjs-trans":5,"twigjs-without":6}],2:[function(require,module,exports){
+},{"./attachListeners":1,"./getNodes":2,"./renderNode":4,"buffer":11,"twig/twig":6,"twigjs-passthrough":7,"twigjs-trans":8,"twigjs-without":9}],4:[function(require,module,exports){
+/*global Drupal */
+'use strict';
+var m = require('moment');
+var baseUrl = window.location.protocol + '//' + window.location.hostname + window.location.port + Drupal.url('');
+
+module.exports = function(twiggedNode) {
+  return function(node) {
+    node.label = node.title[0].value;
+    // Brute force the REST response to include a couple of properties
+    // that the node template wants.
+    node.display_submitted = true;
+    node.url = node._links.self.href;
+    node.author_name = 'Anonymous (not verified)';
+    node.content = {
+      links: 'test',
+      field_image: node._links[baseUrl + 'rest/relation/node/article/field_image'] ? '<div class="field field-node--field-image field-name-field-image field-type-image field-label-hidden"><div class="field-items"><div class="field-item"><img src="' + node._links[baseUrl + 'rest/relation/node/article/field_image'][0].href + '"></div></div></div>' : '',
+      body: node.body[0].value.split("\n").join("<br>")
+    };
+    node.content_attributes = '';
+    node.date = m(parseInt(node.created[0].value, 10) * 1000).format('ddd, MM/DD/YYYY - HH:mm');
+    return twiggedNode.render(node);
+  };
+};
+
+},{"moment":5}],5:[function(require,module,exports){
 (function (global){
 //! moment.js
 //! version : 2.8.4
@@ -3050,7 +3081,7 @@ domready(attachListeners);
 }).call(this);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],3:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 /**
  * Twig.js 0.7.2
  *
@@ -8250,14 +8281,14 @@ if (typeof module !== 'undefined' && module.declare) {
 }
 
 
-},{"fs":7,"path":12}],4:[function(require,module,exports){
+},{"fs":10,"path":15}],7:[function(require,module,exports){
 module.exports = function(T) {
   T.extendFilter('passthrough', function(value) {
     return value;
   });
 };
 
-},{}],5:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 module.exports = function(T) {
   T.extend(function(Twig) {
     // Make trans tag available.
@@ -8295,7 +8326,7 @@ module.exports = function(T) {
   });
 };
 
-},{}],6:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 module.exports = function(T) {
   T.extendFilter('without', function(value, args) {
     var output = '';
@@ -8309,9 +8340,9 @@ module.exports = function(T) {
   });
 };
 
-},{}],7:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 
-},{}],8:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -9629,7 +9660,7 @@ function decodeUtf8Char (str) {
   }
 }
 
-},{"base64-js":9,"ieee754":10,"is-array":11}],9:[function(require,module,exports){
+},{"base64-js":12,"ieee754":13,"is-array":14}],12:[function(require,module,exports){
 var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 ;(function (exports) {
@@ -9755,7 +9786,7 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 	exports.fromByteArray = uint8ToBase64
 }(typeof exports === 'undefined' ? (this.base64js = {}) : exports))
 
-},{}],10:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 exports.read = function(buffer, offset, isLE, mLen, nBytes) {
   var e, m,
       eLen = nBytes * 8 - mLen - 1,
@@ -9841,7 +9872,7 @@ exports.write = function(buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128;
 };
 
-},{}],11:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 
 /**
  * isArray
@@ -9876,7 +9907,7 @@ module.exports = isArray || function (val) {
   return !! val && '[object Array]' == str.call(val);
 };
 
-},{}],12:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -10104,7 +10135,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":13}],13:[function(require,module,exports){
+},{"_process":16}],16:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -10163,4 +10194,4 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}]},{},[1]);
+},{}]},{},[3]);
