@@ -4,3 +4,6 @@ js-js:
   css:
     theme:
       css/vendor/foundation.css: {}
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
