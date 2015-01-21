@@ -5,7 +5,9 @@
 #logo img {
   max-height: 100%;
 }
-
 #logo, #site-name {
-  height: 60px;
+  height: 40px;
+}
+#site-name {
+  font-size: 1.8em;
 }
