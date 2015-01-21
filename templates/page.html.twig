@@ -7,14 +7,13 @@
 
   <header id="header" role="banner" aria-label="{{ 'Site header'|t}}"><div class="section clearfix">
 
-    {% if logo %}
-      <a href="{{ front_page }}" title="{{ 'Home'|t }}" rel="home" id="logo">
-        <img src="{{ logo }}" alt="{{ 'Home'|t }}" />
-      </a>
-    {% endif %}
-
     {% if site_name or site_slogan %}
       <div id="name-and-slogan"{% if hide_site_name and hide_site_slogan %} class="visually-hidden"{% endif %}>
+        {% if logo %}
+          <a href="{{ front_page }}" title="{{ 'Home'|t }}" rel="home" id="logo">
+            <img src="{{ logo }}" alt="{{ 'Home'|t }}" />
+          </a>
+        {% endif %}
         <h1 id="site-name"{% if hide_site_name %} class="visually-hidden" {% endif %}>
           <a href="{{ front_page }}" title="{{ 'Home'|t }}" rel="home"><span>{{ site_name }}</span></a>
         </h1>
@@ -38,25 +37,23 @@
   {% endif %}
 
 
-  <div id="main-wrapper" class="clearfix"><div id="main" class="clearfix">
+  <div id="main-wrapper" class="clearfix columns large-12"><div id="main" class="clearfix row">
 
-    <main id="content" role="main"><section class="section">
+    <div id="sidebar-second" class="column sidebar column large-4"><aside class="section panel" role="complementary">
+      <p>Twig JS with Drupal 8 demo page made by <a href="https://twitter.com/orkj">Eirik.</a></p>
+      <p>Code, resources and ways to say hello:</p>
+      <ul>
+        <li><a href="https://orkjern.com/twig-and-twig-js">Blog post</a></li>
+        <li><a href="https://twitter.com/orkj">@orkj</a></li>
+        <li><a href="mailto:eirik@morland.no">Send me an email</a></li>
+        <li><a href="https://github.com/eiriksm/twigjs-drupal8">Theme code</a></li>
+      </ul>
+    </aside></div><!-- /.section, /#sidebar-second -->
+    <main class="column large-8" id="content" role="main"><section class="section">
       <div id="content-area">
         {{ page.content }}
       </div>
     </section></main> <!-- /.section, /#content -->
-
-    {% if page.sidebar_first %}
-      <div id="sidebar-first" class="column sidebar"><aside class="section" role="complementary">
-        {{ page.sidebar_first }}
-      </aside></div><!-- /.section, /#sidebar-first -->
-    {% endif %}
-
-    {% if page.sidebar_second %}
-      <div id="sidebar-second" class="column sidebar"><aside class="section" role="complementary">
-        {{ page.sidebar_second }}
-      </aside></div><!-- /.section, /#sidebar-second -->
-    {% endif %}
 
   </div></div><!-- /#main, /#main-wrapper -->
 

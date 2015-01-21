@@ -1,0 +1,11 @@
+#logo {
+  float: left;
+  margin-right: 10px;
+}
+#logo img {
+  max-height: 100%;
+}
+
+#logo, #site-name {
+  height: 60px;
+}
