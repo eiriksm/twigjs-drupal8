@@ -19,7 +19,24 @@ var renderNode = require('./renderNode')(twiggedNode);
 var attachListeners = require('./attachListeners');
 var getNodeAndReturn, getNodesAndReturn;
 
-getNodesAndReturn = function() {
+function getNode(nid, skipHistory) {
+  getNodes(nid, function gotNode(err, node) {
+    if (err) {
+      throw new Error(err);
+    }
+    node.page = true;
+    var output = renderNode(node);
+    document.getElementById('content-area').innerHTML = output;
+    var title = node.title[0].value;
+    var url = baseUrl + 'node/' + nid;
+    if (!skipHistory) {
+      window.history.pushState({url: url, node: true, nid: nid}, title, url);
+    }
+    attachListeners(getNodesAndReturn, getNodeAndReturn);
+  });
+}
+
+getNodesAndReturn = function(e, skipHistory) {
   // Get nodes with 0 parameter equals list.
   getNodes(null, function gotNodes(err, nodes) {
     if (err) {
@@ -32,7 +49,10 @@ getNodesAndReturn = function() {
     }
     document.getElementById('content-area').innerHTML = output.join('');
     var title = 'Front page';
-    window.history.pushState({}, title, baseUrl + 'node');
+    var url = baseUrl + 'node';
+    if (!skipHistory) {
+      window.history.pushState({url: url, list: true}, title, url);
+    }
     attachListeners(getNodesAndReturn, getNodeAndReturn);
   });
   return false;
@@ -42,21 +62,20 @@ getNodeAndReturn = function() {
   // Hacking together a parameter for requesting the node.
   var url = this.getAttribute('href');
   var nid = url.substr(url.lastIndexOf('/') + 1);
-  getNodes(nid, function gotNode(err, node) {
-    if (err) {
-      throw new Error(err);
-    }
-    node.page = true;
-    var output = renderNode(node);
-    document.getElementById('content-area').innerHTML = output;
-    var title = node.title[0].value;
-    window.history.pushState({}, title, baseUrl + 'node/' + nid);
-    attachListeners(getNodesAndReturn, getNodeAndReturn);
-  });
+  getNode(nid);
   return false;
 };
 
 // Attach all listeners on dom ready.
 domready(function() {
   attachListeners(getNodesAndReturn, getNodeAndReturn);
+  window.onpopstate = function(e) {
+    if (e.state && e.state.node && e.state.nid) {
+      getNode(e.state.nid, true);
+      return;
+    }
+    if (e.state && e.state.list) {
+      getNodesAndReturn(null, true);
+    }
+  };
 });
