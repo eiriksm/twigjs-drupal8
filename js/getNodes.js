@@ -1,5 +1,7 @@
 /*global Drupal */
 
+var cache = {};
+
 function getNodes(nid, callback) {
   'use strict';
   var url = 'node/' + nid;
@@ -10,6 +12,11 @@ function getNodes(nid, callback) {
   // Assemble url and append query parameter so the browser will not mistake it
   // for the actual page it already has loaded.
   url = Drupal.url('') + url + '?json';
+  // Cheat with speed and use cache.
+  if (cache[url]) {
+    callback(null, cache[url]);
+    return;
+  }
   var xhr = new XMLHttpRequest();
   xhr.onload = function() {
     var data;
@@ -18,7 +25,10 @@ function getNodes(nid, callback) {
     }
     catch (err) {
       callback(err);
+      return;
     }
+    // Remember this.
+    cache[url] = data;
     callback(null, data);
   };
 

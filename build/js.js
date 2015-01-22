@@ -21,6 +21,8 @@ module.exports = function attachListeners(list, single) {
 },{}],2:[function(require,module,exports){
 /*global Drupal */
 
+var cache = {};
+
 function getNodes(nid, callback) {
   'use strict';
   var url = 'node/' + nid;
@@ -31,6 +33,11 @@ function getNodes(nid, callback) {
   // Assemble url and append query parameter so the browser will not mistake it
   // for the actual page it already has loaded.
   url = Drupal.url('') + url + '?json';
+  // Cheat with speed and use cache.
+  if (cache[url]) {
+    callback(null, cache[url]);
+    return;
+  }
   var xhr = new XMLHttpRequest();
   xhr.onload = function() {
     var data;
@@ -39,7 +46,10 @@ function getNodes(nid, callback) {
     }
     catch (err) {
       callback(err);
+      return;
     }
+    // Remember this.
+    cache[url] = data;
     callback(null, data);
   };
 
@@ -73,6 +83,8 @@ var renderNode = require('./renderNode')(twiggedNode);
 var attachListeners = require('./attachListeners');
 var getNodeAndReturn, getNodesAndReturn;
 
+var state;
+
 function getNode(nid, skipHistory) {
   getNodes(nid, function gotNode(err, node) {
     if (err) {
@@ -84,7 +96,8 @@ function getNode(nid, skipHistory) {
     var title = node.title[0].value;
     var url = baseUrl + 'node/' + nid;
     if (!skipHistory) {
-      window.history.pushState({url: url, node: true, nid: nid}, title, url);
+      state = {url: url, node: true, nid: nid};
+      window.history.pushState(state, title, url);
     }
     attachListeners(getNodesAndReturn, getNodeAndReturn);
   });
@@ -105,7 +118,8 @@ getNodesAndReturn = function(e, skipHistory) {
     var title = 'Front page';
     var url = baseUrl + 'node';
     if (!skipHistory) {
-      window.history.pushState({url: url, list: true}, title, url);
+      state = {url: url, list: true};
+      window.history.pushState(state, title, url);
     }
     attachListeners(getNodesAndReturn, getNodeAndReturn);
   });
@@ -129,6 +143,15 @@ domready(function() {
       return;
     }
     if (e.state && e.state.list) {
+      getNodesAndReturn(null, true);
+      return;
+    }
+    // Fallback is to just reuse a global state object.
+    if (state && state.node && state.nid) {
+      getNode(state.nid, true);
+      return;
+    }
+    if (state && state.list) {
       getNodesAndReturn(null, true);
     }
   };

@@ -19,7 +19,7 @@ Subsequent clicks on either the or logo, site name will load the /node page via 
 - Generate some content (For example with devel generate).
 
 ## Demo
-There is a demo site of this theme up at [twigjs-drupal8.orkjern.com](http://twigjs-drupal8.orkjern.com)
+There is a demo site of this theme up at [https://dev-twigjs-drupal8.pantheon.io](https://dev-twigjs-drupal8.pantheon.io)
 
 ## Quirks, bugs, hacks
 This is just a quick proof of concept. Quite often you want to combine this maybe with a framework, and maybe not brute-force all those events onto the elements. Also, this has not been tested in other browsers than Chrome and Firefox. Your milage may vary.
@@ -30,5 +30,8 @@ Things that are not implemented at all:
 - Translation of templates.
 - Probably a whole lot more.
 
-So keep that in mind. This is just a quick hack and not production code. If you want to help implement some of these things in the demo, that sounds swell. Pull requests welcome.
+So keep that in mind. This is just a quick hack and not production code.
+
+## Contribute?
+If you want to help implement some of these things in the demo, that sounds swell. Pull requests welcome.
 
