@@ -2,7 +2,7 @@ twigjs-drupal8
 ==============
 [![Build Status](https://travis-ci.org/eiriksm/twigjs-drupal8.svg?branch=master)](https://travis-ci.org/eiriksm/twigjs-drupal8)
 [![Code Climate](http://img.shields.io/codeclimate/github/eiriksm/twigjs-drupal8.svg)](https://codeclimate.com/github/eiriksm/twigjs-drupal8)
-[![Dependency Status](https://david-dm.org/eiriksm/twigjs-drupal8.svg?theme=shields.io)](https://david-dm.org/eiriksm/twigjs-drupal8)
+[![devDependency Status](https://david-dm.org/eiriksm/twigjs-drupal8/dev-status.svg)](https://david-dm.org/eiriksm/twigjs-drupal8#info=devDependencies)
 
 Working theme for Drupal 8 that uses twig for templates both server side and client side.
 
