@@ -15,7 +15,7 @@ var nodeTemplate = fs.readFileSync(__dirname + '/../templates/node.html.twig');
 var twiggedNode = twig({
   data: nodeTemplate.toString()
 });
-var renderNode = require('./renderNode')(twiggedNode);
+var renderNode = require('./renderNode')(twiggedNode, baseUrl);
 var attachListeners = require('./attachListeners');
 var getNodeAndReturn, getNodesAndReturn;
 

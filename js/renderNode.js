@@ -1,9 +1,7 @@
-/*global Drupal */
 'use strict';
 var m = require('moment');
-var baseUrl = window.location.protocol + '//' + window.location.hostname + window.location.port + Drupal.url('');
 
-module.exports = function(twiggedNode) {
+module.exports = function(twiggedNode, baseUrl) {
   return function(node) {
     node.label = node.title[0].value;
     // Brute force the REST response to include a couple of properties
