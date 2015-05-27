@@ -8,7 +8,7 @@ Working theme for Drupal 8 that uses twig for templates both server side and cli
 
 First page load is a regular one. You get the page as rendered by Drupal.
 
-Subsequent clicks on either the or logo, site name will load the /node page via a view with a REST output. Clicks on nodes will load the node via the REST module.
+Subsequent clicks on either the or logo or site name will load the /node page via a view with a REST output. Clicks on nodes will load the node via the REST module.
 
 ## Installation
 - Install Drupal as usual.
