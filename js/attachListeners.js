@@ -1,8 +1,12 @@
 'use strict';
 
 module.exports = function attachListeners(list, single) {
-  document.querySelector('#logo').onclick = list;
-  document.querySelector('#site-name').querySelector('a').onclick = list;
+  var listLinks = document.querySelectorAll('#logo a')
+  if (listLinks && listLinks.length) {
+    for (var a = 0, length = listLinks.length; a < length; a++) {
+      listLinks[a].onclick = list;
+    }
+  }
   var titles = document.querySelectorAll('.node__title a');
   if (titles && titles.length) {
     for (var i = 0, len = titles.length; i < len; i++) {

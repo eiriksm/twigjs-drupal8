@@ -7,24 +7,9 @@
 
   <header id="header" role="banner" aria-label="{{ 'Site header'|t}}"><div class="columns section clearfix">
 
-    {% if site_name or site_slogan %}
-      <div id="name-and-slogan"{% if hide_site_name and hide_site_slogan %} class="visually-hidden"{% endif %}>
-        {% if logo %}
-          <a href="{{ front_page }}" title="{{ 'Home'|t }}" rel="home" id="logo">
-            <img src="{{ logo }}" alt="{{ 'Home'|t }}" />
-          </a>
-        {% endif %}
-        <h1 id="site-name"{% if hide_site_name %} class="visually-hidden" {% endif %}>
-          <a href="{{ front_page }}" title="{{ 'Home'|t }}" rel="home"><span>{{ site_name }}</span></a>
-        </h1>
-
-        {% if site_slogan %}
-          <div id="site-slogan"{% if hide_site_slogan %} class="visually-hidden"{% endif %}>
-            {{ site_slogan }}
-          </div>
-        {% endif %}
-      </div><!-- /#name-and-slogan -->
-    {% endif %}
+    <div id="logo">
+      {{ page.branding }}
+    </div>
 
     {{ page.header }}
 
