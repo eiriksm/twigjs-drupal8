@@ -20,7 +20,7 @@
   "devDependencies": {
     "brfs": "^1.4.0",
     "browserify": "^10.2.1",
-    "eslint": "^0.21.2",
+    "eslint": "^1.8.0",
     "gulp": "^3.8.11",
     "gulp-livereload": "^3.8.0",
     "istanbul": "^0.3.14",
