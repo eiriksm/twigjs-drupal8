@@ -4,9 +4,6 @@
     "node": true
   },
   "rules": {
-    "quotes": "single",
-    "no-path-concat": false,
-    "no-underscore-dangle": false,
-    "camelcase": false
+    "quotes": [2, "single"]
   }
 }
