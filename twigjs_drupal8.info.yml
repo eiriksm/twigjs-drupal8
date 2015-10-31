@@ -6,5 +6,6 @@ regions:
   header: Header
   content: Content
   footer: Footer
+  branding: Branding
 libraries:
   - twigjs_drupal8/js-js

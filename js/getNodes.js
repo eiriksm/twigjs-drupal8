@@ -11,7 +11,7 @@ function getNodes(nid, callback) {
   }
   // Assemble url and append query parameter so the browser will not mistake it
   // for the actual page it already has loaded.
-  url = Drupal.url('') + url + '?json';
+  url = Drupal.url('') + url + '?_format=hal_json';
   // Cheat with speed and use cache.
   if (cache[url]) {
     callback(null, cache[url]);

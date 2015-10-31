@@ -13,10 +13,10 @@ Subsequent clicks on either the or logo or site name will load the /node page vi
 ## Installation
 - Install Drupal as usual.
 - Enable the required modules and this theme (for example with drush: `drush en hal rest twigjs_drupal8 -y`)
-- Grant the permission of requesting nodes via REST to anonymous users: (`drush rap "anonymous" "restful get entity:node" -y`)
-- Set this theme as the default one: (`drush cset system.theme default twigjs_drupal8 -y`)
+- Grant the permission of requesting nodes via REST to anonymous users: (for example with drush: `drush rap "anonymous" "restful get entity:node" -y`)
+- Set this theme as the default one: (for example with drush: `drush cset system.theme default twigjs_drupal8 -y`)
 - Probably disable some blocks that clutters up the page.
-- Generate some content (For example with devel generate).
+- Generate some content (For example with devel generate and drush: `drush en devel devel_generate -y && drush genc 10`).
 
 ## Demo
 There is a demo site of this theme up at [https://dev-twigjs-drupal8.pantheon.io](https://dev-twigjs-drupal8.pantheon.io)
@@ -34,4 +34,3 @@ So keep that in mind. This is just a quick hack and not production code.
 
 ## Contribute?
 If you want to help implement some of these things in the demo, that sounds swell. Pull requests welcome.
-

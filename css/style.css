@@ -3,11 +3,14 @@
   margin-right: 10px;
 }
 #logo img {
-  max-height: 100%;
+  max-height: 40px;
 }
 #logo, #site-name {
   height: 40px;
 }
 #site-name {
   font-size: 1.8em;
+}
+#footer-wrapper {
+  clear: both;
 }
