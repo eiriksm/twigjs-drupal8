@@ -26,7 +26,7 @@
     "istanbul": "^0.4.0",
     "mocha": "^2.3.3",
     "moment": "^2.10.6",
-    "should": "^7.1.1",
+    "should": "^8.0.1",
     "twig": "^0.8.2",
     "twigjs-passthrough": "0.0.1",
     "twigjs-trans": "0.0.1",
