@@ -19,7 +19,7 @@
   "homepage": "https://github.com/eiriksm/twigjs-drupal8",
   "devDependencies": {
     "brfs": "^1.4.1",
-    "browserify": "^12.0.1",
+    "browserify": "^13.0.0",
     "eslint": "^1.7.3",
     "gulp": "^3.9.0",
     "gulp-livereload": "^3.8.1",
