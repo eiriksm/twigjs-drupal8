@@ -27,7 +27,7 @@
     "mocha": "^2.3.3",
     "moment": "^2.10.6",
     "should": "^8.0.1",
-    "twig": "^0.8.2",
+    "twig": "^0.9.3",
     "twigjs-passthrough": "0.0.1",
     "twigjs-trans": "0.0.1",
     "twigjs-without": "0.0.1",
